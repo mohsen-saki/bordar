@@ -2,17 +2,6 @@
   
     
         "post0": {
-            "title": "Test",
-            "content": "Hello World! .",
-            "url": "https://mohsen-saki.github.io/bordar/2020/02/20/test.html",
-            "relUrl": "/2020/02/20/test.html",
-            "date": " • Feb 20, 2020"
-        }
-        
-    
-  
-    
-        ,"post1": {
             "title": "Hello World",
             "content": "Hello World! .",
             "url": "https://mohsen-saki.github.io/bordar/2020/02/20/Hello-World.html",
