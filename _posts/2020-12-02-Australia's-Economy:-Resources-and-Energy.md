@@ -46,7 +46,7 @@ Despite its slow growth, Manufacturing has yet  kept investors positive by stand
 <br/>
 In context of having the Services sector (eg. Tourism, Education, Hospitality, etc) slashed by the Covid Pandemic, although many casted doubt on the Government's recent plan for sustaining local Manufacturing, yet keeping up more resilient industries (eg. Manufacturing) seems a MUST without a shadow of doubt.
 
-# China: A Love-Hate Story
+# China: A Controversial Story
 
 When It comes to mining products, Australia's export market is highly biased in favour of China. Although there are reasonable facts to justify it, the bare truth is Australia's current situation; stuck in a geopolitical corner with China as tensions set to rise.
 
