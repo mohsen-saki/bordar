@@ -3,12 +3,12 @@ title: "Australia's Economy: Resources and Energy"
 toc: true
 layout: post
 description: "This analysis alongside some dashboards is a historical overview of Australia’s Resources & Energy Sector. Tied to the country's politics & geopolitics, this is the story of how the sector has grown over three decades compared to other major sectors such as Construction, Manufacturing, Agriculture, and Services."
-categories: [analysis, dashboard, powerbi, tableau, australia, economy, energy, resources]
+categories: [analysis, dashboard, powerbi, tableau, australia, economy, energy, resources, insight]
 image: images/2020-12-03-AusEcon/sm_preview.png
 comments: true
 ---
 
-![Image]({{ site.baseurl }}/images/2020-12-03-AusEcon/cover.png)
+![]({{ site.baseurl }}/images/2020-12-03-AusEcon/cover.png)
 
 # Introduction
 
