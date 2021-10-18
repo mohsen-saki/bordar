@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>R.U.Stoked | BORDAR space</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="R.U.Stoked" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="An experimental NLP Project or safe to say sentiment analysis. I will walk you through an end-to-end data pipeline. From data collection through model deployment. Codes are also available on github for further exploration." />
+<meta property="og:description" content="An experimental NLP Project or safe to say sentiment analysis. I will walk you through an end-to-end data pipeline. From data collection through model deployment. Codes are also available on github for further exploration." />
+<link rel="canonical" href="https://mohsen-saki.github.io/bordar/nlp/sentiment%20analysis/machine%20lerarning/sklearn/data%20processing/pandas/bokeh/random%20forest/feature%20engineering/2021/03/17/rustoked.html" />
+<meta property="og:url" content="https://mohsen-saki.github.io/bordar/nlp/sentiment%20analysis/machine%20lerarning/sklearn/data%20processing/pandas/bokeh/random%20forest/feature%20engineering/2021/03/17/rustoked.html" />
+<meta property="og:site_name" content="BORDAR space" />
+<meta property="og:image" content="https://mohsen-saki.github.io/bordar/images/rustoked/sm_preview.jpeg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-03-17T00:00:00-05:00" />
+<script type="application/ld+json">
+{"datePublished":"2021-03-17T00:00:00-05:00","url":"https://mohsen-saki.github.io/bordar/nlp/sentiment%20analysis/machine%20lerarning/sklearn/data%20processing/pandas/bokeh/random%20forest/feature%20engineering/2021/03/17/rustoked.html","@type":"BlogPosting","dateModified":"2021-03-17T00:00:00-05:00","image":"https://mohsen-saki.github.io/bordar/images/rustoked/sm_preview.jpeg","mainEntityOfPage":{"@type":"WebPage","@id":"https://mohsen-saki.github.io/bordar/nlp/sentiment%20analysis/machine%20lerarning/sklearn/data%20processing/pandas/bokeh/random%20forest/feature%20engineering/2021/03/17/rustoked.html"},"headline":"R.U.Stoked","description":"An experimental NLP Project or safe to say sentiment analysis. I will walk you through an end-to-end data pipeline. From data collection through model deployment. Codes are also available on github for further exploration.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/bordar/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mohsen-saki.github.io/bordar/feed.xml" title="BORDAR space" /><link rel="shortcut icon" type="image/x-icon" href="/bordar/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/bordar/">BORDAR space</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/bordar/about/">About Me</a><a class="page-link" href="/bordar/search/">Search</a><a class="page-link" href="/bordar/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">R.U.Stoked</h1><p class="page-description">An experimental NLP Project or safe to say sentiment analysis. I will walk you through an end-to-end data pipeline. From data collection through model deployment. Codes are also available on github for further exploration.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-03-17T00:00:00-05:00" itemprop="datePublished">
+        Mar 17, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#what-about-is-this-project">What about is this project?</a></li>
+<li class="toc-entry toc-h1"><a href="#where-does-data-come-from">Where does data come from?</a></li>
+<li class="toc-entry toc-h1"><a href="#what-are-challenges">What are challenges?</a></li>
+<li class="toc-entry toc-h1"><a href="#first-try-and-failure">First try and failure</a></li>
+<li class="toc-entry toc-h1"><a href="#toolings-and-technologies">Toolings and Technologies</a></li>
+<li class="toc-entry toc-h1"><a href="#how-did-it-go">How did it go?</a></li>
+<li class="toc-entry toc-h1"><a href="#the-application">The Application</a></li>
+<li class="toc-entry toc-h1"><a href="#deployment">Deployment</a></li>
+<li class="toc-entry toc-h1"><a href="#whats-next">What’s next?</a></li>
+</ul><p><img src="/bordar/images/rustoked/cover.jpg" alt=""></p>
+
+<p><br></p>
+
+<h1 id="what-about-is-this-project">
+<a class="anchor" href="#what-about-is-this-project" aria-hidden="true"><span class="octicon octicon-link"></span></a>What about is this project?</h1>
+<hr>
+<p>R.U.Stoked is a <strong>Natural Language Processing</strong> (<em>Sentiment Analysis</em> type), not a binary one though. Here I focused on detecting a third group of sentiment which I call here after <code class="language-plaintext highlighter-rouge">“Disengaged”</code>. A range of opinions which are neither <code class="language-plaintext highlighter-rouge">“Stoked”</code> nor <code class="language-plaintext highlighter-rouge">“Dissatisfied”</code>.  I think detecting this group of so to speak “users/customers” can create business values in problem cases such as <strong>Churn</strong> or targeting <strong>prospect customers</strong>. Actually this idea is also kind of supported by the data. Almost exactly half of reviews rated <code class="language-plaintext highlighter-rouge">3</code> out of <code class="language-plaintext highlighter-rouge">5</code> recommended their experience to others and the other half suggested not to.</p>
+
+<p>View the project here on <a href="https://github.com/mohsen-saki/RUStoked">Github</a>.</p>
+
+<h1 id="where-does-data-come-from">
+<a class="anchor" href="#where-does-data-come-from" aria-hidden="true"><span class="octicon octicon-link"></span></a>Where does data come from?</h1>
+<hr>
+<p>The <a href="https://github.com/mohsen-saki/RUStoked/tree/master/data">data</a> has been collected (/scraped) from <a href="https://www.seek.com.au/">SEEK</a> website. It comprises almost <code class="language-plaintext highlighter-rouge">13k</code> rows of data by which employees have expressed their feelings and opinions about their employers. I have just collected the data for a dozen of companies which have relatively had higher number of reviews.  And They mostly belong to two fields of FMCG retailers and Finance/Technology industries.</p>
+
+<h1 id="what-are-challenges">
+<a class="anchor" href="#what-are-challenges" aria-hidden="true"><span class="octicon octicon-link"></span></a>What are challenges?</h1>
+<hr>
+<ul>
+  <li>Detecting a <em>neutral</em> class of sentiment in between <code class="language-plaintext highlighter-rouge">positive</code> and <code class="language-plaintext highlighter-rouge">negative</code> ones has been a bit of challenge because exploring those reviews shows that the choice of words tends to be almost similar to either positive or negative reviews.</li>
+  <li>Many of the reviews are written by <em>not-native English speakers</em> as they vary a lot in terms of word choices, sentence structures, comprehension, etc.</li>
+  <li>The SEEK template for registering reviews is asking for <code class="language-plaintext highlighter-rouge">pros</code> and <code class="language-plaintext highlighter-rouge">cons</code>. So, it has resulted in more of a list-like outcome rather than comprehensive opinions. For example in response to cons many may say “management” which clearly lacks the sentiment compared to something like “bad or poor management”.</li>
+  <li>Another feature of SEEK’s reviews is that the overall rating is not calculated as average of employees’ ratings on some other subjects but it is acquired independently. This raised a bit of inconsistency between users’ overall opinion of their client compared to their opinion on different aspects of their work paces.</li>
+</ul>
+
+<h1 id="first-try-and-failure">
+<a class="anchor" href="#first-try-and-failure" aria-hidden="true"><span class="octicon octicon-link"></span></a>First try and failure</h1>
+<hr>
+<p>There is a folder named “<a href="https://github.com/mohsen-saki/RUStoked/tree/master/withdrawn">withdrawn</a>” in the repository which contains a few notebooks as my first approach to this project which I consider as a <em>failure</em> not particularly for the outcomes but more because of my strategy. I was sort of rushing to wrap it up which was not really working out and this is why:</p>
+<ul>
+  <li>I did not collect enough data in terms of both the amount of data and the meta-data which help to explore and explain data beter.</li>
+  <li>I did not tackle the problem according to the best practices. I created a pipeline of different models with various features and used the <code class="language-plaintext highlighter-rouge">grid search</code> technique to see which one results in the best accuracy score. I did not put much time into data exploration and feature engineering. As a result, It was more of a black box with no insight of what is going on under the hood of model performance.</li>
+  <li>I was not writing good codes. It was all in the notebooks (not reusable and  well structured)</li>
+</ul>
+
+<p>However, I came across this excellent book <a href="https://www.oreilly.com/library/view/building-machine-learning/9781492045106/">“Building Machine Learning Powered Applications“</a> written by <a href="https://www.linkedin.com/in/ameisen/">Emmanuel Ameisen</a>. Reading this book is actually the reason to reconsider my approach and start this project over.</p>
+
+<h1 id="toolings-and-technologies">
+<a class="anchor" href="#toolings-and-technologies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Toolings and Technologies</h1>
+<hr>
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">pandas</code> to manipulate and explore the data</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">matplotlib</code> and <code class="language-plaintext highlighter-rouge">bokeh</code> to visualise and explore the data</li>
+</ul>
+
+<p><img src="/bordar/images/rustoked/explore1.png" alt=""></p>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">TfifVectorizer</code> and in some cases <code class="language-plaintext highlighter-rouge">Spacy</code> to get the word vectors.</li>
+  <li>Scikit-Learn <code class="language-plaintext highlighter-rouge">RandomForestClassifier</code> and <code class="language-plaintext highlighter-rouge">Naive Bayes</code> as model/algorithm</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">streamlit</code> to build the application</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">Docker</code> and <code class="language-plaintext highlighter-rouge">Github Actions</code> for CI/CD</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">Heroku</code> and <code class="language-plaintext highlighter-rouge">AWS</code> to deploy on</li>
+</ul>
+
+<h1 id="how-did-it-go">
+<a class="anchor" href="#how-did-it-go" aria-hidden="true"><span class="octicon octicon-link"></span></a>How did it go?</h1>
+<hr>
+<p>First model trained on just the text data has performed pretty well on predicting positive and negative classes but poorly on the “Disengaged” labels.</p>
+
+<p><img src="/bordar/images/rustoked/score1.png" alt="Image"></p>
+
+<p>To tweak the model performance, I extracted some features from the data and plugged them into the vectors. Those features were selected to help the model detecting the sentiment better and distinguishing different labels easier such as:</p>
+
+<ul>
+  <li>Words <code class="language-plaintext highlighter-rouge">great</code> and <code class="language-plaintext highlighter-rouge">good</code> appear frequently in positive opinions</li>
+  <li>Words <code class="language-plaintext highlighter-rouge">poor</code>, <code class="language-plaintext highlighter-rouge">bad</code>, <code class="language-plaintext highlighter-rouge">not</code>, etc. appear frequently in negative opinions</li>
+  <li>The <em>count</em> of above words appears to be an indication of sentiment in each piece of review.</li>
+  <li>The word <code class="language-plaintext highlighter-rouge">but</code> seems to have a higher frequency of occurring within “Disengaged” labels as it serves for changing the language tone from positive to negative or vice versa.</li>
+</ul>
+
+<p>Plugging above candidate features in the word vectors and visualization shows some improvement in separating data clusters each containing the majority of one of the labels but for the “Disengaged” label it still does not show much improvement:</p>
+
+<p><img src="/bordar/images/rustoked/explore2.png" alt=""></p>
+
+<p>And the outcome scores agree as well:</p>
+
+<p><img src="/bordar/images/rustoked/score2.png" alt=""></p>
+
+<p>Well, I would say <strong>if features are too obvious, probably the model has already picked them</strong>. Using <code class="language-plaintext highlighter-rouge">Naive Bayes</code> algorithm as recommended by Scikit-Learn (<a href="https://scikit-learn.org/stable/tutorial/machine_learning_map/index.html">Choosing the right estimator</a>) did not make a noticeable difference as expected (<em>Normally a data problem results should not change considerably just by changing algorithm, if so, probably something is done wrong</em>).</p>
+
+<p>However, using just features without the word vectors shows some improvement albeit at cost of model performance decrease on two other labels.</p>
+
+<p><img src="/bordar/images/rustoked/score3.png" alt=""></p>
+
+<p>Working more on generating and extracting features seems like a promising approach to take here.</p>
+
+<h1 id="the-application">
+<a class="anchor" href="#the-application" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="https://rustoked.herokuapp.com/">The Application</a>
+</h1>
+<hr>
+<p>I have recently been hearing a lot about <a href="https://www.streamlit.io/">Streamlit</a> and I wanted to try something new. Although it may not be as sophisticated as some backend frameworks such as <a href="https://flask.palletsprojects.com/en/1.1.x/">Flask</a> and <a href="https://www.djangoproject.com/">Django</a>, I should say that for prototyping and a simple single-page webapp, <a href="https://www.streamlit.io/">Streamlit</a> was super easy, extremely quick, and very cool.</p>
+
+<p><a href="https://rustoked.herokuapp.com/">RUStoked is live here!</a></p>
+
+<p><img src="/bordar/images/rustoked/app.png" alt="Image"></p>
+
+<h1 id="deployment">
+<a class="anchor" href="#deployment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deployment</h1>
+<hr>
+<p>I went with a <a href="https://www.docker.com/">docker</a> image as it is quite standard and straight forward. Deployment has been automated through <a href="https://github.com/features/actions">GitHub Action</a> to trigger some workflows on <code class="language-plaintext highlighter-rouge">push</code> and deploy to <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_instances.html">AWS ECS Instance</a> and <a href="https://www.heroku.com/free">HEROKU</a>, not at the same time though (Heroku server port is not to select and is generated as an environment variable which make some adjusments necessary to Dockerfile).</p>
+
+<p>Obviously AWS required a lot more work around to get it orchestrating right and it is much stronger for providing this level of access to tweak the environment, however I love HEROKU for being simple and free :) as far as it is not consuming resources like a commercial webapp.</p>
+
+<p>Anyway, it is live <a href="https://rustoked.herokuapp.com/">here</a> on <strong>heroku</strong> <del>and <a href="">here</a> on <strong>AWS</strong></del>.</p>
+
+<h1 id="whats-next">
+<a class="anchor" href="#whats-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What’s next?</h1>
+<hr>
+<ul>
+  <li>Writing some unit tests and getting them to run through github actions.</li>
+  <li>More on model development focusing on extracting and generating features</li>
+  <li>Trying CNN for same problem</li>
+</ul>
+
+<hr>
+<p>Thanks to open source and free world.
+<img src="/bordar/images/rustoked/foot.png" alt="Image"></p>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="mohsen-saki/bordar"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/bordar/nlp/sentiment%20analysis/machine%20lerarning/sklearn/data%20processing/pandas/bokeh/random%20forest/feature%20engineering/2021/03/17/rustoked.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/bordar/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/bordar/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/bordar/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Mostly tech, probably how it relates to the community as well. Trying to learn and share!
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/mohsen-saki" title="mohsen-saki"><svg class="svg-icon grey"><use xlink:href="/bordar/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
