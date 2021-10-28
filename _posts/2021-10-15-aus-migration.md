@@ -7,7 +7,6 @@ branch: master
 badges: true
 comments: true
 categories: [analysis, visualization, australia, migration, jupyter, altair, pandas, insight]
-image: images/2021-10-15-AusMig/sm_preview.png
 hide: false
 search_exclude: true
 nb_path: _notebooks/2021-10-15-aus-migration.ipynb
