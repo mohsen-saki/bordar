@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>R.U.Stoked: Go Deep! | BORDAR space</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="R.U.Stoked: Go Deep!" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Here I have tried to tackle a text classification problem using RNN (deep learning). I wrote abou first phase of this personal project which was implemented in sklearn using the ensemble ReandomForest classifier." />
+<meta property="og:description" content="Here I have tried to tackle a text classification problem using RNN (deep learning). I wrote abou first phase of this personal project which was implemented in sklearn using the ensemble ReandomForest classifier." />
+<link rel="canonical" href="https://mohsen-saki.github.io/bordar/text%20classifier/deep%20learning/pytorch/fastai/sentiment%20analysis/rnns/2021/10/28/rustoked-deep.html" />
+<meta property="og:url" content="https://mohsen-saki.github.io/bordar/text%20classifier/deep%20learning/pytorch/fastai/sentiment%20analysis/rnns/2021/10/28/rustoked-deep.html" />
+<meta property="og:site_name" content="BORDAR space" />
+<meta property="og:image" content="https://mohsen-saki.github.io/bordar/images/rustoked_deep/sm_preview.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-10-28T00:00:00-05:00" />
+<script type="application/ld+json">
+{"datePublished":"2021-10-28T00:00:00-05:00","url":"https://mohsen-saki.github.io/bordar/text%20classifier/deep%20learning/pytorch/fastai/sentiment%20analysis/rnns/2021/10/28/rustoked-deep.html","@type":"BlogPosting","dateModified":"2021-10-28T00:00:00-05:00","image":"https://mohsen-saki.github.io/bordar/images/rustoked_deep/sm_preview.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://mohsen-saki.github.io/bordar/text%20classifier/deep%20learning/pytorch/fastai/sentiment%20analysis/rnns/2021/10/28/rustoked-deep.html"},"headline":"R.U.Stoked: Go Deep!","description":"Here I have tried to tackle a text classification problem using RNN (deep learning). I wrote abou first phase of this personal project which was implemented in sklearn using the ensemble ReandomForest classifier.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/bordar/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mohsen-saki.github.io/bordar/feed.xml" title="BORDAR space" /><link rel="shortcut icon" type="image/x-icon" href="/bordar/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/bordar/">BORDAR space</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/bordar/about/">About Me</a><a class="page-link" href="/bordar/search/">Search</a><a class="page-link" href="/bordar/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">R.U.Stoked: Go Deep!</h1><p class="page-description">Here I have tried to tackle a text classification problem using RNN (deep learning). I wrote abou first phase of this personal project which was implemented in sklearn using the ensemble ReandomForest classifier.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-10-28T00:00:00-05:00" itemprop="datePublished">
+        Oct 28, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      10 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/mohsen-saki/bordar/tree/master/_notebooks/2021-10-28-rustoked-deep.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/bordar/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/mohsen-saki/bordar/master?filepath=_notebooks%2F2021-10-28-rustoked-deep.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/bordar/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/mohsen-saki/bordar/blob/master/_notebooks/2021-10-28-rustoked-deep.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/bordar/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#Introduction">Introduction </a></li>
+<li class="toc-entry toc-h1"><a href="#Dataset">Dataset </a></li>
+<li class="toc-entry toc-h1"><a href="#Model-Development">Model Development </a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#Fine-Tuning-the-Language-Model">Fine-Tuning the Language Model </a></li>
+<li class="toc-entry toc-h2"><a href="#Fine-Tuning-Text-Classifier">Fine-Tuning Text Classifier </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#Model-Performance-&-Outcome">Model Performance &amp; Outcome </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-10-28-rustoked-deep.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/bordar/images/copied_from_nb/2021-10-28-rustoked-deep/cover.jpg" alt=""></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Introduction">
+<a class="anchor" href="#Introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction<a class="anchor-link" href="#Introduction"> </a>
+</h1>
+<p>In order to explore further possibilities to improve my personal project <a href="https://mohsen-saki.github.io/bordar/nlp/sentiment%20analysis/machine%20lerarning/sklearn/data%20processing/pandas/bokeh/random%20forest/feature%20engineering/2021/03/17/rustoked.html">R.U.Stoked</a>, I have developed here a neural net (deep learning) application to see how it will pan out given my problem case.</p>
+<blockquote>
+<p><strong>Just a quick recap:</strong> in this problem I have been trying to capture a third sentiment class <code>disengaged</code> among <code>stoked</code> and <code>dissatisfied</code> ones user reviews. The main idea is identifying a group of users/customers that belong to a gray area and are probably an interesting category for a business to focus on (in churn or loyalty business cases).
+I have used <code>Pytorch</code> and on top of that <code>fastai</code> library to do so. Feel free to give it a go by opening this notebook in google colab.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">Uqq</span> <span class="n">fastbook</span>
+<span class="kn">import</span> <span class="nn">fastbook</span>
+<span class="n">fastbook</span><span class="o">.</span><span class="n">setup_book</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">fastbook</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.text.all</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
+
+
+<span class="c1"># utility functions used to clean and prepoare the dataset</span>
+<span class="k">def</span> <span class="nf">get_clean_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">drop_columns</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    cleanup and format initial DataFrame</span>
+<span class="sd">    :param df: raw DataFrame</span>
+<span class="sd">    :return: Processed DataFrame </span>
+<span class="sd">    """</span>
+
+    <span class="c1"># concat `title`, `pros`, and `cons` as body of each review</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'reviews'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'pros'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'cons'</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">" "</span><span class="p">,</span> <span class="n">na_rep</span><span class="o">=</span><span class="s2">""</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">" "</span><span class="p">,</span> <span class="n">na_rep</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">'title'</span><span class="p">,</span> <span class="s1">'pros'</span><span class="p">,</span> <span class="s1">'cons'</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># handling missing data</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'job_title'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'job_title'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">'unknown'</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'location'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'location'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">'Australia'</span><span class="p">)</span>
+
+    <span class="c1"># casting right type to column</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'career_opportunity_rating'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'career_opportunity_rating'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'work_life_balance_rating'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'work_life_balance_rating'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'work_env_rating'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'work_env_rating'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'management_rating'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'management_rating'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'benefits_rating'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'benefits_rating'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'diversity_rating'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'diversity_rating'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'overall_rating'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'overall_rating'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># cleaning 'recommendation' &amp; 'salary' columns</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'recommendation'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'recommendation'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'salary'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'salary'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># new column for overal rating calculated based on employee ratings</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">"calculated_rating"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">"career_opportunity_rating"</span><span class="p">,</span> <span class="s2">"work_life_balance_rating"</span><span class="p">,</span>
+                              <span class="s2">"work_env_rating"</span><span class="p">,</span> <span class="s2">"management_rating"</span><span class="p">,</span> <span class="s2">"benefits_rating"</span><span class="p">,</span>
+                              <span class="s2">"diversity_rating"</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
+
+    <span class="c1"># removing those reviews with two points difference between overall and calculated rating</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'overall_rating'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'calculated_rating'</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)]</span>
+
+    <span class="c1"># mapping ratings to three different category labels</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_labels</span><span class="p">(</span><span class="n">rating</span><span class="p">)</span> <span class="k">for</span> <span class="n">rating</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">"overall_rating"</span><span class="p">]]</span>
+
+    <span class="k">if</span> <span class="n">drop_columns</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">drop_columns</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+
+
+<span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="n">rating</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    map each reating to a label category used by clean_raw_dataframe() function</span>
+<span class="sd">    :rating: overal rating given by employee</span>
+<span class="sd">    "return: data labels</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">rating</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span> <span class="k">return</span> <span class="s2">"dissatisfied"</span>
+    <span class="k">elif</span> <span class="n">rating</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"disengaged"</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"stoked"</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Dataset">
+<a class="anchor" href="#Dataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dataset<a class="anchor-link" href="#Dataset"> </a>
+</h1>
+<p>I used <a href="https://github.com/mohsen-saki/RUStoked/tree/master/data">the same dataset</a> which is fairly a small set of data points (about 13k) and not quite evenly distributed regarding target labels.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">PATH_DATA</span> <span class="o">=</span> <span class="s2">"https://github.com/mohsen-saki/RUStoked/raw/master/data/raw_data.csv"</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">PATH_DATA</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">get_clean_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'reviews'</span><span class="p">,</span> <span class="s1">'labels'</span><span class="p">]]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>reviews</th>
+      <th>labels</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>‘Okay, given your prepared to work long days.’ Plenty of hours for casual staff if willing to work a variety of shifts. If you work hard there are programs in place to progress your career. Salary for DM can be okay depending on how well you can negotiate. Poor work/life balance for DM's who want to achieve KPI's as there is not the budget to achieve with team, you are required to put in quite a few hours extra sometimes upwards of 60+. Some team can be reluctant to do their job properly and do not react well to any change, namely older full time team who have worked for the business for a...</td>
+      <td>disengaged</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>‘Great job to gain work experience and interpersonal skills, plenty of opportunity for moving into manager roles. ’ Great job to further develop interpersonal skills. Opportunity to work in different areas and generally working with a great team.  Working on weekends and public holidays often.</td>
+      <td>stoked</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>‘Great for someone starting out. Can get stifled in Middle Management.’ Boss is not intense. Good Work Vs Life balance. \r\nInteresting workplace. Great customers. Moving the business through change. Setting the vision. \r\nCareer progression, navigating office politics. \r\nDiversity should not just be about gender equality. But, also include age, race, sexual preference.</td>
+      <td>stoked</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Total number of each label in the dataset: "</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Total number of each label in the dataset: 
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>stoked          6076
+dissatisfied    3666
+disengaged      2359
+Name: labels, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Model-Development">
+<a class="anchor" href="#Model-Development" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model Development<a class="anchor-link" href="#Model-Development"> </a>
+</h1>
+<p>I applied the <a href="https://arxiv.org/abs/1801.06146"><strong>ULMFiT</strong></a> approach which is basically fine tuning the language model to the dataset before training a classifier using transfer learning. fastai uses <code>wt103-fwd</code> as default pre-trained language model trained on Wikipedia articles.</p>
+<p>Processed text look like this:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">dls_lm</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span>
+    <span class="n">blocks</span><span class="o">=</span><span class="n">TextBlock</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="s1">'reviews'</span><span class="p">,</span> <span class="n">is_lm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">seq_len</span><span class="o">=</span><span class="mi">72</span><span class="p">),</span>
+    <span class="n">get_items</span><span class="o">=</span><span class="n">ColReader</span><span class="p">(</span><span class="s1">'reviews'</span><span class="p">),</span>
+    <span class="n">splitter</span><span class="o">=</span><span class="n">RandomSplitter</span><span class="p">(</span><span class="mf">0.1</span><span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+
+<span class="n">dls_lm</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">max_n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>text</th>
+      <th>text_</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xxbos ‘ open xxunk is not tolerated . ’ xxmaj flexible working arrangements , work life balance . xxmaj management do not listen , stick to their ideas and their wellbeing xxbos ‘ love working in xxup cba . ’ xxmaj great culture and great people . xxmaj flexible working hours allowed . xxmaj overall good opportunities to move around in the business . xxmaj bureaucracy in some departments . xxbos ‘</td>
+      <td>‘ open xxunk is not tolerated . ’ xxmaj flexible working arrangements , work life balance . xxmaj management do not listen , stick to their ideas and their wellbeing xxbos ‘ love working in xxup cba . ’ xxmaj great culture and great people . xxmaj flexible working hours allowed . xxmaj overall good opportunities to move around in the business . xxmaj bureaucracy in some departments . xxbos ‘ very</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>and travel xxmaj none i enjoyed working there xxbos ‘ over worked for no appreciation ’ xxmaj busy because of lack of staff makes it an xxunk challenge working there xxmaj no training upper xxmaj management are horrible and always looking to blame someone for any minor issue they could just fix and move on xxbos ‘ so so ’ xxmaj friends xxmaj managers xxbos ‘ pleasant ’ xxmaj working with a</td>
+      <td>travel xxmaj none i enjoyed working there xxbos ‘ over worked for no appreciation ’ xxmaj busy because of lack of staff makes it an xxunk challenge working there xxmaj no training upper xxmaj management are horrible and always looking to blame someone for any minor issue they could just fix and move on xxbos ‘ so so ’ xxmaj friends xxmaj managers xxbos ‘ pleasant ’ xxmaj working with a great</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Fine-Tuning-the-Language-Model">
+<a class="anchor" href="#Fine-Tuning-the-Language-Model" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fine-Tuning the Language Model<a class="anchor-link" href="#Fine-Tuning-the-Language-Model"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, I will fine tune the task specific layer (vocab embeddings) of the language model for one epoch.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">language_model_learner</span><span class="p">(</span>
+    <span class="n">dls_lm</span><span class="p">,</span> <span class="n">AWD_LSTM</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">Perplexity</span><span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to_fp16</span><span class="p">()</span>
+
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2e-2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>perplexity</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>4.493875</td>
+      <td>3.905818</td>
+      <td>0.269686</td>
+      <td>49.690720</td>
+      <td>01:20</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then, unfreeze the model and fine-tune for a couple of more epochs.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">unfreeze</span><span class="p">()</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">2e-3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>perplexity</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>4.033870</td>
+      <td>3.735572</td>
+      <td>0.287698</td>
+      <td>41.911976</td>
+      <td>01:37</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>3.863568</td>
+      <td>3.597275</td>
+      <td>0.303558</td>
+      <td>36.498657</td>
+      <td>01:37</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>3.730047</td>
+      <td>3.536184</td>
+      <td>0.310000</td>
+      <td>34.335640</td>
+      <td>01:38</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>3.607229</td>
+      <td>3.496449</td>
+      <td>0.315343</td>
+      <td>32.998066</td>
+      <td>01:38</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>3.494903</td>
+      <td>3.468141</td>
+      <td>0.319108</td>
+      <td>32.077065</td>
+      <td>01:36</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>3.430470</td>
+      <td>3.460073</td>
+      <td>0.320368</td>
+      <td>31.819315</td>
+      <td>01:41</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>3.375872</td>
+      <td>3.460871</td>
+      <td>0.321032</td>
+      <td>31.844700</td>
+      <td>01:37</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the end, I saved the <code>encoder</code> (fine tuned model without the task specific final layer) for the next step which is training a text classifier.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">save_encoder</span><span class="p">(</span><span class="s1">'finetuned'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Fine-Tuning-Text-Classifier">
+<a class="anchor" href="#Fine-Tuning-Text-Classifier" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fine-Tuning Text Classifier<a class="anchor-link" href="#Fine-Tuning-Text-Classifier"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next is time for training the classifier. Need to load saved <code>encoder</code> first.
+Then to fine tune the model while unfreezing little by little.</p>
+<p>The dataset for classfier look like this:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">dls_clas</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span>
+    <span class="n">blocks</span><span class="o">=</span><span class="p">(</span><span class="n">TextBlock</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="s1">'reviews'</span><span class="p">,</span> <span class="n">vocab</span><span class="o">=</span><span class="n">dls_lm</span><span class="o">.</span><span class="n">vocab</span><span class="p">,</span> <span class="n">seq_len</span><span class="o">=</span><span class="mi">72</span><span class="p">),</span> <span class="n">CategoryBlock</span><span class="p">),</span>
+    <span class="n">get_x</span> <span class="o">=</span> <span class="n">ColReader</span><span class="p">(</span><span class="s1">'text'</span><span class="p">),</span>
+    <span class="n">get_y</span> <span class="o">=</span> <span class="n">ColReader</span><span class="p">(</span><span class="s1">'labels'</span><span class="p">),</span>
+    <span class="n">splitter</span><span class="o">=</span><span class="n">RandomSplitter</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+
+<span class="n">dls_clas</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">max_n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>text</th>
+      <th>category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xxbos ‘ i tried to do the best job i could in difficult circumstances , but was xxunk for it . ’ i enjoyed the physically demanding and xxunk stimulating nature of the job in my work as a xxmaj field xxmaj xxunk over 35 years in various customer - facing roles . i found that working in company with groups of individuals who had the commitment to provide the best that they could to a very high standard to be both xxunk and inspirational . xxmaj the people i worked with were open and willing to giving advice and assistance without xxunk or xxunk . xxmaj while it was impossible to avoid personality conflicts all of the time , mutual respect for the individual was evident due to the knowledge , skills , capabilities , and experience that each of my colleagues xxunk . i enjoyed the challenges related</td>
+      <td>dissatisfied</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>xxbos ‘ i would n't recommend the xxmaj graduate xxmaj program here ’ xxmaj met some really great people here and my direct mangers were always lovely . xxmaj though incredibly time - poor , they were always friendly and did their best to support you when possible . xxmaj you do learn a lot about the xxmaj retail / xxup xxunk industry and related fields ( product xxmaj development , xxmaj marketing etc ) so if you 're willing to put in long hours and ask lots of questions , you will gain a lot of knowledge and valuable industry experience . xxmaj the pay was also excellent , though you have to weigh up if it 's really worth it based on the lack of work - life balance . xxmaj if you are a very competitive , profit - driven person and your career is your priority</td>
+      <td>dissatisfied</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>xxbos ‘ great team , learnt a xxup lot , fast paced , can be stressful and challenging . ’ xxmaj the xxunk are awesome with amazing xxunk , great learning sessions and culture building activities . \n\n xxmaj it 's a fast paced environment so you 'll never get bored . \n\n xxmaj my team was very supportive and were flexible with my work arrangements well beyond any other company xxmaj i 've ever worked for . * this may not be the same across every team * \n\n xxup seek is inclusive and genuinely wants to match the right candidate to the right job . xxmaj xxunk employers on the issues surrounding " xxunk bias " and putting tools in place to help minimise it was particularly rewarding to be a part of . xxmaj you see many xxup xxunk , people with xxunk and different age xxunk</td>
+      <td>stoked</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First, train for one epoch:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">text_classifier_learner</span><span class="p">(</span><span class="n">dls_clas</span><span class="p">,</span> <span class="n">AWD_LSTM</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span><span class="p">)</span><span class="o">.</span><span class="n">to_fp16</span><span class="p">()</span>
+
+<span class="n">learn</span><span class="o">.</span><span class="n">load_encoder</span><span class="p">(</span><span class="s1">'finetuned'</span><span class="p">)</span>
+
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">2e-2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.659904</td>
+      <td>0.644060</td>
+      <td>0.723140</td>
+      <td>00:28</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Train one more epoch by unfreezing two last layers:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">freeze_to</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="mf">1e-2</span><span class="o">/</span><span class="p">(</span><span class="mf">2.6</span><span class="o">**</span><span class="mi">4</span><span class="p">),</span><span class="mf">1e-2</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.613120</td>
+      <td>0.599738</td>
+      <td>0.735537</td>
+      <td>00:31</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Train one more epoch by unfreezing three last layers:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">freeze_to</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="mf">5e-3</span><span class="o">/</span><span class="p">(</span><span class="mf">2.6</span><span class="o">**</span><span class="mi">4</span><span class="p">),</span><span class="mf">5e-3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.549451</td>
+      <td>0.581448</td>
+      <td>0.743388</td>
+      <td>00:50</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And last, two more epochs having all layers unfreezed:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">unfreeze</span><span class="p">()</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="mf">1e-3</span><span class="o">/</span><span class="p">(</span><span class="mf">2.6</span><span class="o">**</span><span class="mi">4</span><span class="p">),</span><span class="mf">1e-3</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.487775</td>
+      <td>0.610825</td>
+      <td>0.743802</td>
+      <td>01:04</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.457831</td>
+      <td>0.620456</td>
+      <td>0.739256</td>
+      <td>01:04</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Model-Performance-&amp;-Outcome">
+<a class="anchor" href="#Model-Performance-&amp;-Outcome" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model Performance &amp; Outcome<a class="anchor-link" href="#Model-Performance-&amp;-Outcome"> </a>
+</h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Comparing model performance with the <a href="https://mohsen-saki.github.io/bordar/nlp/sentiment%20analysis/machine%20lerarning/sklearn/data%20processing/pandas/bokeh/random%20forest/feature%20engineering/2021/03/17/rustoked.html#how-did-it-go">Machine Learning version (RandomForest)</a>; its overall performance as well as its accuracy for target class has noticeably improved. However, it is yet far behind the benchmarks. Considering the fact that this is probably the best I can get with deep learning (unless collecting much more data for the model to learn from), it might be worth it to pick the traditional version from where I left it before.
+Having said that, I think detecting more than %30 of target class could still be a good base model as a proof of concept. Detecting that many users with some level of neutral opinion can still be a good starting point to create some values in a business case.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">interp</span> <span class="o">=</span> <span class="n">ClassificationInterpretation</span><span class="o">.</span><span class="n">from_learner</span><span class="p">(</span><span class="n">learn</span><span class="p">)</span>
+<span class="n">interp</span><span class="o">.</span><span class="n">print_classification_report</span><span class="p">(</span> <span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>              precision    recall  f1-score   support
+
+  disengaged       0.41      0.31      0.35       467
+dissatisfied       0.78      0.74      0.76       770
+      stoked       0.80      0.91      0.85      1183
+
+    accuracy                           0.74      2420
+   macro avg       0.66      0.65      0.65      2420
+weighted avg       0.72      0.74      0.73      2420
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-python"><pre><span></span><span class="n">interp</span><span class="o">.</span><span class="n">plot_confusion_matrix</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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%0A">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="mohsen-saki/bordar"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/bordar/text%20classifier/deep%20learning/pytorch/fastai/sentiment%20analysis/rnns/2021/10/28/rustoked-deep.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/bordar/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/bordar/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/bordar/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Mostly tech, probably how it relates to the community as well. Trying to learn and share!
+</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/mohsen-saki" title="mohsen-saki"><svg class="svg-icon grey"><use xlink:href="/bordar/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
