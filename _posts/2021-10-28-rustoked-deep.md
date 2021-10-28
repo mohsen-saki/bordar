@@ -7,7 +7,7 @@ branch: master
 badges: true
 comments: true
 categories: [text classifier, deep learning, pytorch, fastai, sentiment analysis, RNNs]
-image: images/rustoked_deep/sm_preview.jpg
+image: images/rustoked_deep/sm_preview.png
 hide: false
 search_exclude: true
 nb_path: _notebooks/2021-10-28-rustoked-deep.ipynb
