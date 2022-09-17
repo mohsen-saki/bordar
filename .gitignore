@@ -16,3 +16,4 @@ settings.ini
 .ipynb_checkpoints/
 _posts/.ipynb_checkpoints/
 .vscode/
+.venv

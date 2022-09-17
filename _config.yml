@@ -11,6 +11,7 @@ description: >
   Mostly tech, probably how it relates to the
   community as well. Trying to learn and share!
 github_username: mohsen-saki
+twitter_username: _mohsen_saki
 # you can comment the below line out if your repo name is not different than your baseurl
 github_repo: "bordar"
 
@@ -41,7 +42,7 @@ baseurl: "/bordar" # the subpath of your site, e.g. "/blog".
 # Github and twitter are optional:
 minima:
   social_links:
-    #twitter: sakima
+    twitter: _mohsen_saki
     github: mohsen-saki
 
 # Set this to true to get LaTeX math equation support
