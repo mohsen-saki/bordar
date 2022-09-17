@@ -12,8 +12,5 @@ _notebooks/.ipynb_checkpoints
 .netlify
 .tweet-cache
 __pycache__
-settings.ini
-.ipynb_checkpoints/
-_posts/.ipynb_checkpoints/
 .vscode/
 .venv
